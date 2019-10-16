@@ -163,7 +163,7 @@ describe('Demo App', () => {
   it('it should remove transaction', async () => {
     await page.click(`[data-test="Transaction-1"]`);
     await page.waitFor(500);
-    const transactionListEl = await page.$eval(`[data-test-value]`, el => el);
+    const transactionListEl = await page.$eval(`[data-test="TransactionList"]`, e => e.getAttribute("data-testdata-test-transactions-length"));
     console.log(transactionListEl)
     // const transactionListLength = parseInt(transactionListEl.dataset.testValue);
 
