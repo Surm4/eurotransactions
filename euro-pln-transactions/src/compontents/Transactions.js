@@ -202,7 +202,8 @@ class Transactions extends React.Component {
                     onMouseOver={e => this.transactionSetFocus(transaction.Id, true)}
                     onMouseLeave={e => this.transactionSetFocus(transaction.Id, false)}
                     key={transaction.Id}
-                    >
+                    data-test={"Transaction-" + transaction.Id}
+                >
                     <TransactionName>{transaction.Name}</TransactionName>
                     <TransactionValue data-test="TransactionValueEUR">{ValueEUR}
                         <TransactionCurrency isNegativeValue={transaction.negativeValue}>EUR</TransactionCurrency>
@@ -210,7 +211,7 @@ class Transactions extends React.Component {
                     <TransactionValue data-test="TransactionValuePLN">{ValuePLN}
                         <TransactionCurrency isNegativeValue={transaction.negativeValue}>PLN</TransactionCurrency>
                     </TransactionValue>
-                    <DeleteButton onClick={e => this.deleteTransaction(transaction.Id)} className="fas fa-window-close" isShowed={transaction.deleteButtonEnabled}></DeleteButton>
+                    <DeleteButton onClick={e => this.deleteTransaction(transaction.Id)} data-test={"TransactionDelete-" + transaction.Id} className="fas fa-window-close" isShowed={transaction.deleteButtonEnabled}></DeleteButton>
                 </Transaction>
             );
         });
@@ -223,7 +224,7 @@ class Transactions extends React.Component {
             <TransactionsContainer>
                 <TransactionsHeader>
                     <TransactionsHeaderText>Current Transactions</TransactionsHeaderText>
-                    <TransactionsHeaderInput isCorrect={this.props.customCurrencyCorrect} type="number" step="0.1" placeholder="Change euro rate e.g. 0,00." onChange={e => this.setEurValue(e.target.value)} />
+                    <TransactionsHeaderInput data-test="TransactionCurrencyRate" isCorrect={this.props.customCurrencyCorrect} type="number" step="0.1" placeholder="Change euro rate e.g. 0,00." onChange={e => this.setEurValue(e.target.value)} />
                 </TransactionsHeader>
                 <TransactionsContentContainer data-test-value={this.props.mockupObject.length} ref={element => this.TransactionContainerEl = element} myHeight={this.props.transactionContentHeight}>
                     <TransactionDesc>

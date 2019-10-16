@@ -137,18 +137,40 @@ describe('Demo App', () => {
   });
 
   it('total EUR should be proper', async () => {
-    await page.waitFor(1000); 
-    const numbers = await page.$(`[data-test="TransactionValueEuro"]`);
-    console.log(numbers)
-    const euroTotal = 690; 
+    await page.waitFor(1000);
+    const numbersElements = await page.$$(`[data-test="TransactionValueEUR"]`);
+    const numbers = [...numbersElements].map(el => ({ ValueEUR: parseFloat(el.textContent) }));
+    const totalCalculated = calculateTransactionTotalEUR(numbers);
+    const totalEl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const total = parseFloat(totalEl);
+
+    expect(total).toBe(totalCalculated);
   });
 
   it('total PLN should be correct and fetched from NBP', async () => {
-    await page.waitFor(1000); 
+    await page.waitFor(1000);
     const nbpApiResponse = await fetch(`http://api.nbp.pl/api/exchangerates/rates/a/eur?format=json`);
     const nbpApiResponseJSON = await nbpApiResponse.json();
     const euroRateValue = nbpApiResponseJSON.rates[0].mid;
-    const euroTotal = 690; 
+    const totalEUREl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const totalEUR = parseFloat(totalEUREl);
+    const totalPLNEl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const totalPLN = parseFloat(totalPLNEl);
+
+    expect(totalPLN.toFixed(2)).toBe((totalEUR * euroRateValue).toFixed(2));
+  });
+
+  it('total PLN should be correct and fetched from NBP', async () => {
+    await page.waitFor(1000);
+    const nbpApiResponse = await fetch(`http://api.nbp.pl/api/exchangerates/rates/a/eur?format=json`);
+    const nbpApiResponseJSON = await nbpApiResponse.json();
+    const euroRateValue = nbpApiResponseJSON.rates[0].mid;
+    const totalEUREl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const totalEUR = parseFloat(totalEUREl);
+    const totalPLNEl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const totalPLN = parseFloat(totalPLNEl);
+
+    expect(totalPLN.toFixed(2)).toBe((totalEUR * euroRateValue).toFixed(2));
   });
 
 });

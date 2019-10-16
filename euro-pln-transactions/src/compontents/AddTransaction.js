@@ -166,12 +166,14 @@ class AddTransaction extends React.Component {
             <AddTransactionContainer>
                 <AddFunctionsWrap>
                     <AddTransactionName onChange={e => this.setTransactionName(e.target.value)}
-                        type="text" placeholder="Transaction Name" maxLength="32" isCorrect={this.props.newNameCorrect} value={this.props.newName} />
+                        type="text" placeholder="Transaction Name" maxLength="32" isCorrect={this.props.newNameCorrect} value={this.props.newName}
+                        data-test="TransactionName" />
                     <AddTransactionAmount onChange={e => this.setTransactionAmount(e.target.value)} isCorrect={this.props.newAmountCorrect}
                         value={this.props.newAmount}
-                        type="number" step="0.01" placeholder="0,00" />
+                        type="number" step="0.01" placeholder="0,00"
+                        data-test="TransactionAmount" />
                     <AddTransactionCurrency type="text" value="EUR" disabled />
-                    <AddTransactionButton onClick={e => this.addTransaction()}>
+                    <AddTransactionButton data-test="TransactionAdd" onClick={e => this.addTransaction()}>
                         Add
                         <AddTransactionButtonAnimationBox data-animation="button-animation"></AddTransactionButtonAnimationBox>
                     </AddTransactionButton>
