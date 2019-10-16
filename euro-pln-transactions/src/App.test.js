@@ -126,7 +126,7 @@ describe('React', () => {
 
 });
 describe('Demo App', () => {
-
+  //MAKE SURE HEROKU IS TURNED ON
   beforeAll(async () => {
     browser = await Puppeteer.launch({ headless: false });
     page = await browser.newPage();

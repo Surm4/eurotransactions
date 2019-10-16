@@ -63,7 +63,9 @@ function* setTransactionName(action) {
     }
 }
 
-function* addTransaction() {
+function* addTransaction(action) {
+    yield put({ type: SET_TRANSACTION_CONTENT_HEIGHT, height: action.height, heightToCalc: 33 });
+    yield(250);
     yield put({ type: ADD_TRANSACTION });
     yield delay(250);
     yield put({ type: SHOW_TRANSACTION });

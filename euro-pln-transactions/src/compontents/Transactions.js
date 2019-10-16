@@ -129,12 +129,13 @@ const TransactionDescriptionField = styled.h4`
 
 const TransactionSummary = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 `;
 
 const TransactionSummaryTitle = styled.h3`
     margin: 0;
     color: ${props => props.isNegativeValue ? THEME_MAIN_ERROR_COLOR : THEME_MAIN_SECONDARY_FONT_COLOR};
+    text-align: ${props => props.textCenter ? "center" : "auto"};
 `;
 
 const SummaryCurrency = styled.span`
@@ -144,11 +145,26 @@ const SummaryCurrency = styled.span`
 const TransactionSummaryField = styled.h4`
     margin: 0;
     color: ${THEME_MAIN_PRIMARY_FONT_COLOR};
+    text-align: ${props => props.textCenter ? "center" : "auto"};
 `;
 
 const DeleteButton = styled.i`
     transition: .25s ease;
     ${props => props.isShowed ? "opacity: 100; pointer-events: auto;" : "opacity: 0; pointer-events: none;"}
+`;
+
+const TransactionsSummaryWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-right: 1.5rem;
+`;
+
+const TransactionsHighestTransaction = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-left: 1.5rem;
+    border-left: 1px solid ${THEME_MAIN_QUATERNARY_COLOR};
 `;
 
 const Message = styled.p`
@@ -172,24 +188,12 @@ class Transactions extends React.Component {
         }
     };
 
-    componentDidMount() {
-        this.setEurValue();
-        this.setTransactionContentHeight();
-    };
-
-    componentDidUpdate() {
-        const el = this.TransactionContainerEl;
-        if ((el.scrollHeight > el.clientHeight) && el.clientHeight < 540) {
-            this.setTransactionContentHeight(el.scrollHeight - el.clientHeight);
-        }
-    };
-
     transactionSetFocus = (id, option) => {
         this.props.dispatch({ type: SET_TRANSACTION_FOCUSED_REQUEST, id, option });
     };
 
     deleteTransaction = (id) => {
-        this.props.dispatch({ type: DELETE_TRANSACTION_REQUEST, id })
+        this.props.dispatch({ type: DELETE_TRANSACTION_REQUEST, id });
     };
 
     generateTransactions = () => {
@@ -219,6 +223,25 @@ class Transactions extends React.Component {
         return transactionItems.length ? transactionItems : <Message>No Transaction Available</Message>;
     };
 
+    highestTransaction = () => {
+        const highestValue = Math.max(...this.props.mockupObject.map(transaction => transaction.ValueEUR));
+        const highestTransaction = this.props.mockupObject.filter(transaction => transaction.ValueEUR === highestValue);
+        const noTransaction = { Name: "N/A", ValueEUR: false, ValuePLN: false };
+        return highestTransaction.length ? highestTransaction[0] : noTransaction;
+    };
+
+    componentDidMount() {
+        this.setEurValue();
+        this.setTransactionContentHeight();
+    };
+
+    componentDidUpdate() {
+        const el = this.TransactionContainerEl;
+        if ((el.scrollHeight > el.clientHeight) && el.clientHeight < 540) {
+            this.setTransactionContentHeight(el.scrollHeight - el.clientHeight);
+        }
+    };
+
     render() {
         return (
             <TransactionsContainer>
@@ -235,13 +258,29 @@ class Transactions extends React.Component {
                     {this.generateTransactions()} {/* Transaction Fields */}
                 </TransactionsContentContainer>
                 <TransactionSummary>
-                    <TransactionSummaryTitle isNegativeValue={this.props.totalNegativeValue}>Total:</TransactionSummaryTitle>
-                    <TransactionSummaryField data-test="TransactionSummaryFieldPLN">{this.props.totalPLN.toFixed(2)}
-                        <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> PLN</SummaryCurrency>
-                    </TransactionSummaryField>
-                    <TransactionSummaryField data-test="TransactionSummaryFieldEUR">{this.props.totalEUR.toFixed(2)}
-                        <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> EUR</SummaryCurrency>
-                    </TransactionSummaryField>
+                    <TransactionsSummaryWrap>
+                        <TransactionSummaryTitle isNegativeValue={this.props.totalNegativeValue}>Total:</TransactionSummaryTitle>
+                        <TransactionSummaryField data-test="TransactionSummaryFieldPLN">{this.props.totalPLN.toFixed(2)}
+                            <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> PLN</SummaryCurrency>
+                        </TransactionSummaryField>
+                        <TransactionSummaryField data-test="TransactionSummaryFieldEUR">{this.props.totalEUR.toFixed(2)}
+                            <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> EUR</SummaryCurrency>
+                        </TransactionSummaryField>
+                    </TransactionsSummaryWrap>
+                    <TransactionsHighestTransaction>
+                        <TransactionSummaryTitle isNegativeValue={this.props.totalNegativeValue} textCenter={true}>Highest Transaction:</TransactionSummaryTitle>
+                        <TransactionSummaryField textCenter={true}>
+                            {this.highestTransaction().Name}
+                        </TransactionSummaryField>
+                        <TransactionSummaryField textCenter={true}>
+                            {Number(this.highestTransaction().ValueEUR).toFixed(2)}
+                            <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> EUR</SummaryCurrency>
+                        </TransactionSummaryField>
+                        <TransactionSummaryField textCenter={true}>
+                            {Number(this.highestTransaction().ValuePLN).toFixed(2)}
+                            <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> PLN</SummaryCurrency>
+                        </TransactionSummaryField>
+                    </TransactionsHighestTransaction>
                 </TransactionSummary>
             </TransactionsContainer>
         );
