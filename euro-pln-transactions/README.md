@@ -2,7 +2,7 @@
 ### [https://eurotransactions.herokuapp.com/](https://eurotransactions.herokuapp.com/)
 
 ## Usage
-![Image](https://i.imgur.com/7U148tP.gif)
+![Image](https://i.imgur.com/ZdaYACA.gif)
 ## Available Scripts
 In the project directory, you can run:
 ### `npm start`
