@@ -133,15 +133,15 @@ describe('Demo App', () => {
   });
 
   it('should load page', async () => {
-    await page.goto('https://eurotransactions.herokuapp.com/'); //DEMO APP with master github branch
+    await page.goto('https://eurotransactions.herokuapp.com/'); //DEMO HEROKU APP connected with github for your test setup new server enviroment
   });
 
   it('total EUR should be proper', async () => {
     await page.waitFor(1000);
-    const numbersElements = await page.$$(`[data-test="TransactionValueEUR"]`);
-    const numbers = [...numbersElements].map(el => ({ ValueEUR: parseFloat(el.textContent) }));
+    const numbersElements = await page.$$eval(`[data-test="TransactionValueEUR"]`, el => el.map(e => e.textContent));
+    const numbers = numbersElements.map(el => ({ ValueEUR: parseFloat(el) }));
     const totalCalculated = calculateTransactionTotalEUR(numbers);
-    const totalEl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const totalEl = await page.$eval(`[data-test="TransactionSummaryFieldEUR"]`, el => el.textContent);
     const total = parseFloat(totalEl);
 
     expect(total).toBe(totalCalculated);
@@ -152,22 +152,42 @@ describe('Demo App', () => {
     const nbpApiResponse = await fetch(`http://api.nbp.pl/api/exchangerates/rates/a/eur?format=json`);
     const nbpApiResponseJSON = await nbpApiResponse.json();
     const euroRateValue = nbpApiResponseJSON.rates[0].mid;
-    const totalEUREl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const totalEUREl = await page.$eval(`[data-test="TransactionSummaryFieldEUR"]`, el => el.textContent);
     const totalEUR = parseFloat(totalEUREl);
-    const totalPLNEl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
+    const totalPLNEl = await page.$eval(`[data-test="TransactionSummaryFieldPLN"]`, el => el.textContent);
     const totalPLN = parseFloat(totalPLNEl);
 
     expect(totalPLN.toFixed(2)).toBe((totalEUR * euroRateValue).toFixed(2));
   });
 
-  it('it should remove transaction', async () => {
-    await page.click(`[data-test="Transaction-1"]`);
-    await page.waitFor(500);
-    const transactionListEl = await page.$eval(`[data-test="TransactionList"]`, e => e.getAttribute("data-testdata-test-transactions-length"));
-    console.log(transactionListEl)
-    // const transactionListLength = parseInt(transactionListEl.dataset.testValue);
+  it('should remove transaction', async () => {
+    await page.click(`[data-test="TransactionDelete-1"]`);
+    await page.waitFor(1000);
+    const transactionListEl = await page.$eval(`[data-test="TransactionList"]`, e => e.getAttribute("data-test-transactions-length"));
+    const transactionListLength = parseInt(transactionListEl);
 
-    // expect(transactionListLength).toBe(3);
+    expect(transactionListLength).toBe(3);
+  });
+
+  it('should add transaction', async () => {
+    await page.type(`[data-test="TransactionName"]`, "Test Transaction");
+    await page.type(`[data-test="TransactionAmount"]`, "20");
+    await page.click(`[data-test="TransactionAdd"]`);
+    await page.waitFor(1000);
+    const transactionListEl = await page.$eval(`[data-test="TransactionList"]`, e => e.getAttribute("data-test-transactions-length"));
+    const transactionListLength = parseInt(transactionListEl);
+
+    expect(transactionListLength).toBe(4);
+  });
+
+  it('should calculate EUR -> PLN properly', async () => {
+    await page.type(`[data-test="TransactionCurrencyRate"]`, "2");
+    await page.waitFor(1000);
+    const EURvalues = await page.$$eval(`[data-test="TransactionValueEUR"]`, el => el.map(e => e.textContent));
+    const calculatedEURNumbers = EURvalues.map(el => (parseFloat(el) * 2).toFixed(2));
+    const PLNScrappedValues = await page.$$eval(`[data-test="TransactionValuePLN"]`, el => el.map(e => e.textContent));
+    const PLNvalues = PLNScrappedValues.map(el => parseFloat(el).toFixed(2));
+    expect(PLNvalues).toEqual(calculatedEURNumbers);
   });
 
 });
