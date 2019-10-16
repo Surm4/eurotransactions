@@ -1,6 +1,6 @@
 const validateName = (name) => {
     try {
-        if (name.length && name.length <= 32) {
+        if (name.trim().length && name.length <= 32) {
             return name;
         } 
         return;

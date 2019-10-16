@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const callNBPapi = async () => {
     let res, err;
-    await axios.get('http://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json')
+    await axios.get('https://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json')
     .then((response) => {
         res = response;
     })

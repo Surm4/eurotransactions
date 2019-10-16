@@ -1,6 +1,6 @@
 const validateIsNumber = (amount) => {
     try {
-        const parsedAmount = parseFloat(amount) || false;
+        const parsedAmount = parseFloat(amount) || undefined;
         return parsedAmount;
     } catch {
         return;
