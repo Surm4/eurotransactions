@@ -1,0 +1,9 @@
+export const THEME_MAIN_SECONDARY_FONT_COLOR = "#07ff53";
+export const THEME_MAIN_PRIMARY_FONT_COLOR = "#f5f5f5";
+export const THEME_MAIN_TERTIARY_COLOR = "#07ff537a";
+export const THEME_MAIN_BG_COLOR = "#2e324a";
+export const THEME_MAIN_READONLY_COLOR = "#7b7b7b87";
+export const THEME_MAIN_QUATERNARY_COLOR = "#929292";
+export const THEME_MAIN_BODY_COLOR = "#26293e";
+export const THEME_MAIN_ERROR_COLOR = "#ff075a";
+export const THEME_MAIN_DARK_COLOR = "#100019";
