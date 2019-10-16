@@ -23,7 +23,7 @@ function* fetchEURvalue() {
 }
 
 function* setEURvalue(action) {
-    if (action.EURvalue && validateIsNumber(action.EURvalue)) {
+    if (action.EURvalue > 0 && validateIsNumber(action.EURvalue)) {
         yield put({ type: SET_EUR_VALUE, EURvalue: action.EURvalue, customCurrencyCorrect: true });
         yield put({ type: SET_TRANSACTIONS_TOTAL_EUR });
         yield put({ type: SET_TRANSACTIONS_TOTAL_PLN });

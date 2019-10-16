@@ -187,6 +187,7 @@ describe('Demo App', () => {
     const calculatedEURNumbers = EURvalues.map(el => (parseFloat(el) * 2).toFixed(2));
     const PLNScrappedValues = await page.$$eval(`[data-test="TransactionValuePLN"]`, el => el.map(e => e.textContent));
     const PLNvalues = PLNScrappedValues.map(el => parseFloat(el).toFixed(2));
+    
     expect(PLNvalues).toEqual(calculatedEURNumbers);
   });
 
