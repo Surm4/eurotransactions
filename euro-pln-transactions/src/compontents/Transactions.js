@@ -201,12 +201,13 @@ class Transactions extends React.Component {
                     isVisible={transaction.isVisible}
                     onMouseOver={e => this.transactionSetFocus(transaction.Id, true)}
                     onMouseLeave={e => this.transactionSetFocus(transaction.Id, false)}
-                    key={transaction.Id}>
+                    key={transaction.Id}
+                    >
                     <TransactionName>{transaction.Name}</TransactionName>
-                    <TransactionValue>{ValueEUR}
+                    <TransactionValue data-test="TransactionValueEUR">{ValueEUR}
                         <TransactionCurrency isNegativeValue={transaction.negativeValue}>EUR</TransactionCurrency>
                     </TransactionValue>
-                    <TransactionValue>{ValuePLN}
+                    <TransactionValue data-test="TransactionValuePLN">{ValuePLN}
                         <TransactionCurrency isNegativeValue={transaction.negativeValue}>PLN</TransactionCurrency>
                     </TransactionValue>
                     <DeleteButton onClick={e => this.deleteTransaction(transaction.Id)} className="fas fa-window-close" isShowed={transaction.deleteButtonEnabled}></DeleteButton>
@@ -224,7 +225,7 @@ class Transactions extends React.Component {
                     <TransactionsHeaderText>Current Transactions</TransactionsHeaderText>
                     <TransactionsHeaderInput isCorrect={this.props.customCurrencyCorrect} type="number" step="0.1" placeholder="Change euro rate e.g. 0,00." onChange={e => this.setEurValue(e.target.value)} />
                 </TransactionsHeader>
-                <TransactionsContentContainer ref={element => this.TransactionContainerEl = element} myHeight={this.props.transactionContentHeight}>
+                <TransactionsContentContainer data-test-value={this.props.mockupObject.length} ref={element => this.TransactionContainerEl = element} myHeight={this.props.transactionContentHeight}>
                     <TransactionDesc>
                         <TransactionDescriptionField>Name</TransactionDescriptionField>
                         <TransactionDescriptionField>Amount</TransactionDescriptionField>
@@ -234,10 +235,10 @@ class Transactions extends React.Component {
                 </TransactionsContentContainer>
                 <TransactionSummary>
                     <TransactionSummaryTitle isNegativeValue={this.props.totalNegativeValue}>Total:</TransactionSummaryTitle>
-                    <TransactionSummaryField>{this.props.totalPLN.toFixed(2)}
+                    <TransactionSummaryField data-test="TransactionSummaryFieldPLN">{this.props.totalPLN.toFixed(2)}
                         <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> PLN</SummaryCurrency>
                     </TransactionSummaryField>
-                    <TransactionSummaryField>{this.props.totalEUR.toFixed(2)}
+                    <TransactionSummaryField data-test="TransactionSummaryFieldEUR">{this.props.totalEUR.toFixed(2)}
                         <SummaryCurrency isNegativeValue={this.props.totalNegativeValue}> EUR</SummaryCurrency>
                     </TransactionSummaryField>
                 </TransactionSummary>

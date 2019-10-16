@@ -136,8 +136,19 @@ describe('Demo App', () => {
     await page.goto('https://eurotransactions.herokuapp.com/'); //DEMO APP with master github branch
   });
 
+  it('total EUR should be proper', async () => {
+    await page.waitFor(1000); 
+    const numbers = await page.$(`[data-test="TransactionValueEuro"]`);
+    console.log(numbers)
+    const euroTotal = 690; 
+  });
+
   it('total PLN should be correct and fetched from NBP', async () => {
     await page.waitFor(1000); 
+    const nbpApiResponse = await fetch(`http://api.nbp.pl/api/exchangerates/rates/a/eur?format=json`);
+    const nbpApiResponseJSON = await nbpApiResponse.json();
+    const euroRateValue = nbpApiResponseJSON.rates[0].mid;
+    const euroTotal = 690; 
   });
 
 });
