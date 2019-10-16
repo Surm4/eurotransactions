@@ -160,17 +160,14 @@ describe('Demo App', () => {
     expect(totalPLN.toFixed(2)).toBe((totalEUR * euroRateValue).toFixed(2));
   });
 
-  it('total PLN should be correct and fetched from NBP', async () => {
-    await page.waitFor(1000);
-    const nbpApiResponse = await fetch(`http://api.nbp.pl/api/exchangerates/rates/a/eur?format=json`);
-    const nbpApiResponseJSON = await nbpApiResponse.json();
-    const euroRateValue = nbpApiResponseJSON.rates[0].mid;
-    const totalEUREl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
-    const totalEUR = parseFloat(totalEUREl);
-    const totalPLNEl = await page.$(`[data-test="TransactionSummaryFieldEUR"]`);
-    const totalPLN = parseFloat(totalPLNEl);
+  it('it should remove transaction', async () => {
+    await page.click(`[data-test="Transaction-1"]`);
+    await page.waitFor(500);
+    const transactionListEl = await page.$eval(`[data-test-value]`, el => el);
+    console.log(transactionListEl)
+    // const transactionListLength = parseInt(transactionListEl.dataset.testValue);
 
-    expect(totalPLN.toFixed(2)).toBe((totalEUR * euroRateValue).toFixed(2));
+    // expect(transactionListLength).toBe(3);
   });
 
 });

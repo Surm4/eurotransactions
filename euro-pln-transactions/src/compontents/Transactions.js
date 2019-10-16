@@ -226,7 +226,7 @@ class Transactions extends React.Component {
                     <TransactionsHeaderText>Current Transactions</TransactionsHeaderText>
                     <TransactionsHeaderInput data-test="TransactionCurrencyRate" isCorrect={this.props.customCurrencyCorrect} type="number" step="0.1" placeholder="Change euro rate e.g. 0,00." onChange={e => this.setEurValue(e.target.value)} />
                 </TransactionsHeader>
-                <TransactionsContentContainer data-test-value={this.props.mockupObject.length} ref={element => this.TransactionContainerEl = element} myHeight={this.props.transactionContentHeight}>
+                <TransactionsContentContainer data-test="TransactionList" data-test-transactionsLength={this.props.mockupObject.length} ref={element => this.TransactionContainerEl = element} myHeight={this.props.transactionContentHeight}>
                     <TransactionDesc>
                         <TransactionDescriptionField>Name</TransactionDescriptionField>
                         <TransactionDescriptionField>Amount</TransactionDescriptionField>
