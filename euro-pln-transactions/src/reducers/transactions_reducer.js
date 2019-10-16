@@ -17,7 +17,7 @@ const transactionsReducer = (state = initialState, action) => {
                         ValuePLN: transaction.ValueEUR * (action.EURvalue || state.currentEURvalue),
                     }
                 }),
-                currentEURvalue: action.EURvalue,
+                currentEURvalue: action.EURvalue || state.currentEURvalue,
                 customCurrencyCorrect: action.customCurrencyCorrect
             };
         case SET_TRANSACTIONS_TOTAL_EUR:
