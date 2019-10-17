@@ -4,7 +4,7 @@
 ## Usage
 ![Image](https://i.imgur.com/ZdaYACA.gif)
 ## Available Scripts
-In the project directory, you can run:
+In the project directory, you can run (make sure you have everything necessary installed `npm install`):
 ### `npm start`
 
 Runs the app in the development mode.<br />
